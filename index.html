@@ -125,10 +125,14 @@ cd squishable
 
 <p><em>Note: This is a bug, hopefully it gets <a href="https://github.com/rails/rails/pull/3066">fixed</a></em></p>
 
-<pre><code>spec/dummy/db/*.sqlite3
-spec/dummy/log/*.log
-spec/dummy/tmp/
-</code></pre>
+<figure class='code'><figcaption><span>.gitignore </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>spec/dummy/db/*.sqlite3
+</span><span class='line'>spec/dummy/log/*.log
+</span><span class='line'>spec/dummy/tmp/</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Commit</p>
 
@@ -144,10 +148,15 @@ spec/dummy/tmp/
 
 <p><em>Note: I had to pin rack to v1.3.3 to avoid strange warnings</em></p>
 
-<pre><code>s.add_development_dependency "rack", "1.3.3"
-s.add_development_dependency "rspec-rails", "~&gt; 2.6.1"
-s.add_development_dependency "capybara", "~&gt; 1.1.1"
-</code></pre>
+<figure class='code'><figcaption><span>squishable.gemspec  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s2">&quot;rack&quot;</span><span class="p">,</span> <span class="s2">&quot;1.3.3&quot;</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s2">&quot;rspec-rails&quot;</span><span class="p">,</span> <span class="s2">&quot;~&gt; 2.6.1&quot;</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s2">&quot;capybara&quot;</span><span class="p">,</span> <span class="s2">&quot;~&gt; 1.1.1&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Install everything</p>
 
@@ -166,20 +175,35 @@ s.add_development_dependency "capybara", "~&gt; 1.1.1"
 
 <p>The spec helper is mostly broken in the context of an engine, replace with:</p>
 
-<pre><code># Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
-require File.expand_path("../dummy/config/environment.rb", __FILE__)
-require 'rspec/rails'
+<figure class='code'><figcaption><span>spec/spec_helper.rb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Configure Rails Environment</span>
+</span><span class='line'><span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;RAILS_ENV&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;../dummy/config/environment.rb&quot;</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">)</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rspec/rails&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">backtrace_cleaner</span><span class="o">.</span><span class="n">remove_silencers!</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Load support files</span>
+</span><span class='line'><span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span><span class="si">}</span><span class="s2">/support/**/*.rb&quot;</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="nb">require</span> <span class="n">f</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">use_transactional_fixtures</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-Rails.backtrace_cleaner.remove_silencers!
-
-# Load support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
-
-RSpec.configure do |config|
-  config.use_transactional_fixtures = true
-end
-</code></pre>
 
 <p>Open engine&#8217;s <code>Rakefile</code></p>
 
@@ -188,11 +212,17 @@ end
 
 <p>Add RSpec tasks and default task</p>
 
-<pre><code>require 'rspec/core/rake_task'
+<figure class='code'><figcaption><span>Rakefile  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rspec/core/rake_task&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RSpec</span><span class="o">::</span><span class="no">Core</span><span class="o">::</span><span class="no">RakeTask</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:spec</span><span class="p">)</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="ss">:spec</span>
+</span></code></pre></td></tr></table></div></figure>
 
-RSpec::Core::RakeTask.new(:spec)
-task :default =&gt; :spec
-</code></pre>
 
 <p>Commit</p>
 
@@ -213,9 +243,13 @@ task :default =&gt; :spec
 
 <p>And add</p>
 
-<pre><code>require 'spec_helper.rb'
-require 'capybara/rspec'
-</code></pre>
+<figure class='code'><figcaption><span>spec/acceptance/acceptance_helper.rb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;spec_helper.rb&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara/rspec&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Commit</p>
 
@@ -227,28 +261,49 @@ require 'capybara/rspec'
 <pre><code>emacs spec/acceptance/squishes_spec.rb
 </code></pre>
 
-<p>Add</p>
+<p>And add</p>
 
-<pre><code>require 'acceptance/acceptance_helper'
+<figure class='code'><figcaption><span>spec/acceptance/squishes_spec.rb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;acceptance/acceptance_helper&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">feature</span> <span class="s2">&quot;Squishes&quot;</span><span class="p">,</span> <span class="sx">%q{</span>
+</span><span class='line'><span class="sx">  In order to be better than my friends</span>
+</span><span class='line'><span class="sx">  As a kid</span>
+</span><span class='line'><span class="sx">  I want to create and manage my squishes</span>
+</span><span class='line'><span class="sx">}</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">background</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">Squishable</span><span class="o">::</span><span class="no">Squish</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="ss">:squash</span> <span class="o">=&gt;</span> <span class="s1">&#39;Squoshy Squish&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Squishable</span><span class="o">::</span><span class="no">Squish</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="ss">:squash</span> <span class="o">=&gt;</span> <span class="s1">&#39;Sploshy Squish&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">scenario</span> <span class="s2">&quot;View a list of squishes&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">visit</span> <span class="s1">&#39;/squishable/squishes&#39;</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span><span class="p">(</span><span class="s1">&#39;Squoshy Squish&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span><span class="p">(</span><span class="s1">&#39;Sploshy Squish&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-feature "Squishes", %q{
-  In order to be better than my friends
-  As a kid
-  I want to create and manage my squishes
-} do
-
-  background do
-    Squishable::Squish.create!(:squash =&gt; 'Squoshy Squish')
-    Squishable::Squish.create!(:squash =&gt; 'Sploshy Squish')
-  end
-
-  scenario "View a list of squishes" do
-    visit '/squishable/squishes'
-    page.should have_content('Squoshy Squish')
-    page.should have_content('Sploshy Squish')
-  end
-end
-</code></pre>
 
 <p>Run specs to see them fail</p>
 
@@ -278,8 +333,11 @@ rake db:migrate RAILS_ENV=test
 
 <p>Change the class definition:</p>
 
-<pre><code>class SquishesController &lt; ::ApplicationController
-</code></pre>
+<figure class='code'><figcaption><span>app/controllers/squishable/squishes_controller.rbb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SquishesController</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">ApplicationController</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Get rid of application layout in engine, we don&#8217;t need it now that we&#8217;re inheriting from the main app&#8217;s controller.</p>
 
