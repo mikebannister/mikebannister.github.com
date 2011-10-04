@@ -42,9 +42,13 @@ Change references from `test/dummy` to `spec/dummy`
 
 *Note: This is a bug, hopefully it gets [fixed](https://github.com/rails/rails/pull/3066)*
 
-    spec/dummy/db/*.sqlite3
-    spec/dummy/log/*.log
-    spec/dummy/tmp/
+{% codeblock .gitignore %}
+
+spec/dummy/db/*.sqlite3
+spec/dummy/log/*.log
+spec/dummy/tmp/
+
+{% endcodeblock %}
 
 Commit
 
@@ -58,9 +62,13 @@ Add Rails and testing dependencies
 
 *Note: I had to pin rack to v1.3.3 to avoid strange warnings*
 
-    s.add_development_dependency "rack", "1.3.3"
-    s.add_development_dependency "rspec-rails", "~> 2.6.1"
-    s.add_development_dependency "capybara", "~> 1.1.1"
+{% codeblock squishable.gemspec lang:ruby %}
+
+s.add_development_dependency "rack", "1.3.3"
+s.add_development_dependency "rspec-rails", "~> 2.6.1"
+s.add_development_dependency "capybara", "~> 1.1.1"
+
+{% endcodeblock %}
 
 Install everything
 
@@ -76,19 +84,23 @@ Open `spec_helper`
 
 The spec helper is mostly broken in the context of an engine, replace with:
 
-    # Configure Rails Environment
-    ENV["RAILS_ENV"] = "test"
-    require File.expand_path("../dummy/config/environment.rb", __FILE__)
-    require 'rspec/rails'
+{% codeblock spec/spec_helper.rb lang:ruby %}
 
-    Rails.backtrace_cleaner.remove_silencers!
+# Configure Rails Environment
+ENV["RAILS_ENV"] = "test"
+require File.expand_path("../dummy/config/environment.rb", __FILE__)
+require 'rspec/rails'
 
-    # Load support files
-    Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+Rails.backtrace_cleaner.remove_silencers!
 
-    RSpec.configure do |config|
-      config.use_transactional_fixtures = true
-    end
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true
+end
+
+{% endcodeblock %}
 
 Open engine's `Rakefile`
 
@@ -96,10 +108,14 @@ Open engine's `Rakefile`
 
 Add RSpec tasks and default task
 
-    require 'rspec/core/rake_task'
+{% codeblock Rakefile lang:ruby %}
 
-    RSpec::Core::RakeTask.new(:spec)
-    task :default => :spec
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+task :default => :spec
+
+{% endcodeblock %}
 
 Commit
 
@@ -117,8 +133,12 @@ Open `acceptance_helper.rb`
 
 And add
 
-    require 'spec_helper.rb'
-    require 'capybara/rspec'
+{% codeblock spec/acceptance/acceptance_helper.rb lang:ruby %}
+
+require 'spec_helper.rb'
+require 'capybara/rspec'
+
+{% endcodeblock %}
 
 Commit
 
@@ -128,27 +148,31 @@ Open `squishes_spec.rb`
 
     emacs spec/acceptance/squishes_spec.rb
 
-Add
+And add
 
-    require 'acceptance/acceptance_helper'
+{% codeblock spec/acceptance/squishes_spec.rb lang:ruby %}
 
-    feature "Squishes", %q{
-      In order to be better than my friends
-      As a kid
-      I want to create and manage my squishes
-    } do
+require 'acceptance/acceptance_helper'
 
-      background do
-        Squishable::Squish.create!(:squash => 'Squoshy Squish')
-        Squishable::Squish.create!(:squash => 'Sploshy Squish')
-      end
+feature "Squishes", %q{
+  In order to be better than my friends
+  As a kid
+  I want to create and manage my squishes
+} do
 
-      scenario "View a list of squishes" do
-        visit '/squishable/squishes'
-        page.should have_content('Squoshy Squish')
-        page.should have_content('Sploshy Squish')
-      end
-    end
+  background do
+    Squishable::Squish.create!(:squash => 'Squoshy Squish')
+    Squishable::Squish.create!(:squash => 'Sploshy Squish')
+  end
+
+  scenario "View a list of squishes" do
+    visit '/squishable/squishes'
+    page.should have_content('Squoshy Squish')
+    page.should have_content('Sploshy Squish')
+  end
+end
+
+{% endcodeblock %}
 
 Run specs to see them fail
 
@@ -174,7 +198,11 @@ Open `app/controllers/squishable/squishes_controller.rb`
 
 Change the class definition:
 
-    class SquishesController < ::ApplicationController
+{% codeblock app/controllers/squishable/squishes_controller.rbb lang:ruby %}
+
+class SquishesController < ::ApplicationController
+
+{% endcodeblock %}
 
 Get rid of application layout in engine, we don't need it now that we're inheriting from the main app's controller.
 
