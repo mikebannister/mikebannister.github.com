@@ -6,10 +6,10 @@
 <head>
   <meta charset="utf-8">
   <title>Blog Archive - Brain Bicycle</title>
-  <meta name="author" content="Your Name">
+  <meta name="author" content="Mike Bannister">
 
   
-  <meta name="description" content="        Blog Archive                    Recent Posts          ">
+  <meta name="description" content="        Blog Archive                    Latest Tweets      Status updating...            Follow @possibilities    Github Repos      Status updating...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mikebannister.github.com/blog/archives/">
+  <link rel="canonical" href="http://brainbicycle/blog/archives/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -35,8 +35,6 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Brain Bicycle</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
-  
 </hgroup>
 
 </header>
@@ -46,7 +44,7 @@
 </ul>
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mikebannister.github.com" />
+    <input type="hidden" name="q" value="site:brainbicycle" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -77,15 +75,59 @@
 
 <aside class="sidebar">
   
-    <section>
+    
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("possibilities", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/possibilities" class="twitter-follow-button" data-width="208px" data-show-count="false">Follow @possibilities</a>
+  
+</section>
+
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mikebannister">@mikebannister</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mikebannister',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
   </ul>
 </section>
-
-
-
 
   
 </aside>
@@ -94,12 +136,26 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - Your Name -
+  Copyright &copy; 2011 - Mike Bannister -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
+
+<script type="text/javascript">
+    (function () {
+      var disqus_shortname = 'brainbicycle';
+      
+        
+        var disqus_script = 'count.js'
+      
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
