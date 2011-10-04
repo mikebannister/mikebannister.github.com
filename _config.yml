@@ -33,7 +33,7 @@ pagination_dir: blog
 recent_posts: 5
 excerpt_link: "More &rarr;"
 
-default_asides: [asides/links.html, asides/twitter.html, asides/github.html, asides/recent_posts.html]
+default_asides: [custom/asides/links.html, asides/twitter.html, asides/github.html, asides/recent_posts.html]
 
 # ----------------------- #
 #   3rd Party Settings    #
