@@ -4,7 +4,7 @@
   <title>Brain Bicycle</title>
   <link href="http://brainbicycle/atom.xml" rel="self"/>
   <link href="http://brainbicycle/"/>
-  <updated>2011-10-04T02:20:26-04:00</updated>
+  <updated>2011-10-04T02:26:28-04:00</updated>
   <id>http://brainbicycle/</id>
   <author>
     <name>Mike Bannister</name>
@@ -282,8 +282,6 @@ rake db:migrate RAILS_ENV=test
 &lt;pre&gt;&lt;code&gt;git add . &amp;amp;&amp;amp; git ci -m&quot;squishable scaffold&quot; \
   -m$&#8217;rails g scaffold Squishes squash:string\nrake db:migrate\nremoved engine app layout&#8217;
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You&amp;#8217;ll probably also want to cleanup &lt;code&gt;Gemfile&lt;/code&gt;, &lt;code&gt;squishable.gemset&lt;/code&gt;, &lt;code&gt;config/routes.rb&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;See the resulting &lt;a href=&quot;https://github.com/mikebannister/squishable&quot;&gt;repo on github&lt;/a&gt;.&lt;/p&gt;
 
