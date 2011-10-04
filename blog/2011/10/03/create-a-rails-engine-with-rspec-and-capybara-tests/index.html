@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Brain Bicycle</title>
+  <title>Create a Rails::Engine With RSpec and Capybara Tests - Brain Bicycle</title>
   <meta name="author" content="Mike Bannister">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://brainbicycle/">
+  <link rel="canonical" href="http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -56,15 +56,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/">Create a Rails::Engine With RSpec and Capybara Tests</a></h1>
+      <h1 class="entry-title">Create a Rails::Engine With RSpec and Capybara Tests</h1>
     
     
       <p class="meta">
@@ -85,7 +82,7 @@
   </header>
 
 
-  <div class="entry-content"><p>I&#8217;m very excited about the prominence of engines in Rails 3.1. As you may know Rails::Application inherits from Rails::Engine. So when you write an engine you get all the power of a full rails app in a tidy package that can be added, as a sub-app, to your main application. Rails 3.1 provides a generator for creating new engines but setting it up to work with RSpec and Capybara took a couple extra steps. What follows are the steps I took to get my engine ready to start driving out features with RSpec and Capybara.</p>
+<div class="entry-content"><p>I&#8217;m very excited about the prominence of engines in Rails 3.1. As you may know Rails::Application inherits from Rails::Engine. So when you write an engine you get all the power of a full rails app in a tidy package that can be added, as a sub-app, to your main application. Rails 3.1 provides a generator for creating new engines but setting it up to work with RSpec and Capybara took a couple extra steps. What follows are the steps I took to get my engine ready to start driving out features with RSpec and Capybara.</p>
 
 <h3>Recipe</h3>
 
@@ -304,27 +301,65 @@ rake db:migrate RAILS_ENV=test
 
 <p><a href="http://jeffkreeftmeijer.com/2011/acceptance-testing-using-capybaras-new-rspec-dsl/">Acceptance testing using Capybara&#8217;s new RSpec DSL</a> by Jeff Kreeftmeijer</p>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Mike Bannister</span></span>
+
+      
+
+
+
+
+
   
 
 
-    </article>
+
+<time datetime="2011-10-03T23:21:00-04:00" pubdate  data-updated="true" >Oct 3<span>rd</span>, 2011</time>
+      
+
+<span class="categories">
   
-  <nav class="pagination">
-    <div>
-      
-      <a href="/blog/archives">Blog Archives</a>
-      
-    </div>
-  </nav>
+    <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/testing/'>Testing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/" data-via="possibilities" data-counturl="http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
 </div>
+
+    
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -341,7 +376,7 @@ rake db:migrate RAILS_ENV=test
 <section>
   <h1>Github Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/mikebannister">@mikebannister</a> on Github
@@ -381,6 +416,7 @@ rake db:migrate RAILS_ENV=test
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -396,7 +432,10 @@ rake db:migrate RAILS_ENV=test
       var disqus_shortname = 'brainbicycle';
       
         
-        var disqus_script = 'count.js'
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/';
+        var disqus_url = 'http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/';
+        var disqus_script = 'embed.js'
       
 
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

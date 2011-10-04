@@ -4,7 +4,7 @@
   <title>Brain Bicycle</title>
   <link href="http://brainbicycle/atom.xml" rel="self"/>
   <link href="http://brainbicycle/"/>
-  <updated>2011-10-04T01:11:57-04:00</updated>
+  <updated>2011-10-04T01:37:10-04:00</updated>
   <id>http://brainbicycle/</id>
   <author>
     <name>Mike Bannister</name>
@@ -12,5 +12,231 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title>Create a Rails::Engine With RSpec and Capybara Tests</title>
+    <link href="http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/"/>
+    <updated>2011-10-03T23:21:00-04:00</updated>
+    <id>http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests</id>
+    <content type="html">&lt;p&gt;I&amp;#8217;m very excited about the prominence of engines in Rails 3.1. As you may know Rails::Application inherits from Rails::Engine. So when you write an engine you get all the power of a full rails app in a tidy package that can be added, as a sub-app, to your main application. Rails 3.1 provides a generator for creating new engines but setting it up to work with RSpec and Capybara took a couple extra steps. What follows are the steps I took to get my engine ready to start driving out features with RSpec and Capybara.&lt;/p&gt;
+
+&lt;h3&gt;Recipe&lt;/h3&gt;
+
+&lt;p&gt;Setup environment&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rvm gemset create squishable
+rvm gemset use squishable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install Rails in the gemset so we can use the plugin generator&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gem install rails
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Generate the engine&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rails plugin new squishable &#8211;mountable &#8211;skip-test-unit &#8211;dummy-path=spec/dummy
+cd squishable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add project environment file&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &#8216;rvm @squishable&#8217; &amp;gt; .rvmrc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Initial commit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git init &amp;amp;&amp;amp; git add . &amp;amp;&amp;amp; git commit -am&quot;generated engine&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open &lt;code&gt;.gitignore&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change references from &lt;code&gt;test/dummy&lt;/code&gt; to &lt;code&gt;spec/dummy&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: This is a bug, hopefully it gets &lt;a href=&quot;https://github.com/rails/rails/pull/3066&quot;&gt;fixed&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spec/dummy/db/*.sqlite3
+spec/dummy/log/*.log
+spec/dummy/tmp/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Commit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git commit -am&quot;changed references from test/dummy to spec/dummy in gitignore&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open &lt;code&gt;squishable.gemspec&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs squishable.gemspec
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add Rails and testing dependencies&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: I had to pin rack to v1.3.3 to avoid strange warnings&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;s.add_development_dependency &quot;rack&quot;, &quot;1.3.3&quot;
+s.add_development_dependency &quot;rspec-rails&quot;, &quot;~&amp;gt; 2.6.1&quot;
+s.add_development_dependency &quot;capybara&quot;, &quot;~&amp;gt; 1.1.1&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install everything&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bundle update rack &amp;amp;&amp;amp; bundle install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install rspec config file and spec_helper&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rails g rspec:install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open &lt;code&gt;spec_helper&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs spec/spec_helper.rb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The spec helper is mostly broken in the context of an engine, replace with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Configure Rails Environment
+ENV[&quot;RAILS_ENV&quot;] = &quot;test&quot;
+require File.expand_path(&quot;../dummy/config/environment.rb&quot;, __FILE__)
+require &#8216;rspec/rails&#8217;
+
+Rails.backtrace_cleaner.remove_silencers!
+
+# Load support files
+Dir[&quot;#{File.dirname(__FILE__)}/support/**/*.rb&quot;].each { |f| require f }
+
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open engine&amp;#8217;s &lt;code&gt;Rakefile&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs Rakefile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add RSpec tasks and default task&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#8216;rspec/core/rake_task&#8217;
+
+RSpec::Core::RakeTask.new(:spec)
+task :default =&amp;gt; :spec
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Commit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add . &amp;amp;&amp;amp; git commit -m&quot;added rspec&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Setup RSpec/Capybara acceptance tests&lt;/h3&gt;
+
+&lt;p&gt;Make directory for acceptance tests&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p spec/acceptance
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open &lt;code&gt;acceptance_helper.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs spec/acceptance/acceptance_helper.rb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And add&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#8216;spec_helper.rb&#8217;
+require &#8216;capybara/rspec&#8217;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Commit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add . &amp;amp;&amp;amp; git ci -am&quot;installed capybara&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open &lt;code&gt;squishes_spec.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs spec/acceptance/squishes_spec.rb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#8216;acceptance/acceptance_helper&#8217;
+
+feature &quot;Squishes&quot;, %q{
+  In order to be better than my friends
+  As a kid
+  I want to create and manage my squishes
+} do
+
+  background do
+    Squishable::Squish.create!(:squash =&amp;gt; &#8216;Squoshy Squish&#8217;)
+    Squishable::Squish.create!(:squash =&amp;gt; &#8216;Sploshy Squish&#8217;)
+  end
+
+  scenario &quot;View a list of squishes&quot; do
+    visit &#8216;/squishable/squishes&#8217;
+    page.should have_content(&#8216;Squoshy Squish&#8217;)
+    page.should have_content(&#8216;Sploshy Squish&#8217;)
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run specs to see them fail&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Generate the code and migrate database to make the tests pass&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: The second call to db:migrate is needed in lieu of a rake:test:prepare equivalent for ab engine generated with &lt;code&gt;plugin new&lt;/code&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rails g scaffold Squishes squash:string
+rake db:migrate
+rake db:migrate RAILS_ENV=test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run specs to see them pass&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One last, but important, step is to change any controller you create in the engine to extend &lt;code&gt;::ApplicationController&lt;/code&gt; rather than &lt;code&gt;ApplicationController::Base&lt;/code&gt;. Among other things this will cause your engines views to be rendered in the main application&amp;#8217;s layout rather than the engine&amp;#8217;s.&lt;/p&gt;
+
+&lt;p&gt;Open &lt;code&gt;app/controllers/squishable/squishes_controller.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emacs app/controllers/squishable/squishes_controller.rb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change the class definition:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class SquishesController &amp;lt; ::ApplicationController
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Get rid of application layout in engine, we don&amp;#8217;t need it now that we&amp;#8217;re inheriting from the main app&amp;#8217;s controller.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git rm -r app/views/layouts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Commit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add . &amp;amp;&amp;amp; git ci -m&quot;squishable scaffold&quot; \
+  -m$&#8217;rails g scaffold Squishes squash:string\nrake db:migrate\nremoved engine app layout&#8217;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You&amp;#8217;ll probably also want to cleanup &lt;code&gt;Gemfile&lt;/code&gt;, &lt;code&gt;squishable.gemset&lt;/code&gt;, &lt;code&gt;config/routes.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;See the resulting &lt;a href=&quot;https://github.com/mikebannister/squishable&quot;&gt;repo on github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.manning.com/katz/&quot;&gt;Rails 3 In Action&lt;/a&gt; by Ryan Bigg and Yehuda Katz&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/master/railties/lib/rails/engine.rb&quot;&gt;Rails::Engine documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://jeffkreeftmeijer.com/2011/acceptance-testing-using-capybaras-new-rspec-dsl/&quot;&gt;Acceptance testing using Capybara&amp;#8217;s new RSpec DSL&lt;/a&gt; by Jeff Kreeftmeijer&lt;/p&gt;
+</content>
+  </entry>
   
 </feed>
