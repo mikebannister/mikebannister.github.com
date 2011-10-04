@@ -213,8 +213,6 @@ Commit
     git add . && git ci -m"squishable scaffold" \
       -m$'rails g scaffold Squishes squash:string\nrake db:migrate\nremoved engine app layout'
 
-You'll probably also want to cleanup `Gemfile`, `squishable.gemset`, `config/routes.rb`
-
 See the resulting [repo on github](https://github.com/mikebannister/squishable).
 
 ### References ###
