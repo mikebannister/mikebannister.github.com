@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title>Brain Bicycle</title>
-  <link href="http://brainbicycle/atom.xml" rel="self"/>
-  <link href="http://brainbicycle/"/>
-  <updated>2011-10-04T02:31:27-04:00</updated>
-  <id>http://brainbicycle/</id>
+  <link href="http://brainbicycle.net/atom.xml" rel="self"/>
+  <link href="http://brainbicycle.net/"/>
+  <updated>2011-10-04T02:36:12-04:00</updated>
+  <id>http://brainbicycle.net/</id>
   <author>
     <name>Mike Bannister</name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title>Create a Rails::Engine With RSpec and Capybara Tests</title>
-    <link href="http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/"/>
+    <link href="http://brainbicycle.net/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/"/>
     <updated>2011-10-03T23:21:00-04:00</updated>
-    <id>http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests</id>
+    <id>http://brainbicycle.net/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests</id>
     <content type="html">&lt;p&gt;I&amp;#8217;m very excited about the prominence of engines in Rails 3.1. As you may know Rails::Application inherits from Rails::Engine. So when you write an engine you get all the power of a full rails app in a tidy package that can be added, as a sub-app, to your main application. Rails 3.1 provides a generator for creating new engines but setting it up to work with RSpec and Capybara took a couple extra steps. What follows are the steps I took to get my engine ready to start driving out features with RSpec and Capybara.&lt;/p&gt;
 
 &lt;h3&gt;Recipe&lt;/h3&gt;

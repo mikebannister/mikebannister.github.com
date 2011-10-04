@@ -2,16 +2,16 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>
-            http://brainbicycle/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/
+            http://brainbicycle.net/blog/2011/10/03/create-a-rails-engine-with-rspec-and-capybara-tests/
         </loc>
         <lastmod>2011-10-04T02:26:05-04:00</lastmod>
     </url>
     <url>
-        <loc>http://brainbicycle/blog/archives/</loc>
+        <loc>http://brainbicycle.net/blog/archives/</loc>
         <lastmod>2011-10-04T02:26:05-04:00</lastmod>
     </url>
     <url>
-        <loc>http://brainbicycle/</loc>
+        <loc>http://brainbicycle.net/</loc>
         <lastmod>2011-10-04T02:26:05-04:00</lastmod>
     </url>
 </urlset>
