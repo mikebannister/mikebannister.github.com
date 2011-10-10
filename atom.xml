@@ -4,7 +4,7 @@
   <title>Brain Bicycle</title>
   <link href="http://brainbicycle.net/atom.xml" rel="self"/>
   <link href="http://brainbicycle.net/"/>
-  <updated>2011-10-10T14:29:06-04:00</updated>
+  <updated>2011-10-10T14:34:59-04:00</updated>
   <id>http://brainbicycle.net/</id>
   <author>
     <name>Mike Bannister</name>
@@ -30,8 +30,9 @@
 
 &lt;p&gt;In the tests that needed I now have a &lt;code&gt;background&lt;/code&gt; block that includes:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Rails.cache.clear
-&lt;/code&gt;&lt;/pre&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre class=&quot;line-numbers&quot;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8221;&gt;&lt;span class=&#8217;line&#8217;&gt;Rails.cache.clear&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
 
 &lt;p&gt;Problem solved but&amp;#8230;&lt;/p&gt;
 
