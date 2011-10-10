@@ -21,7 +21,11 @@ Next I decided check Google quickly before cracking open Capybara's source code 
 
 In the tests that needed I now have a `background` block that includes:
 
-    Rails.cache.clear
+{% codeblock %}
+
+Rails.cache.clear
+
+{% endcodeblock %}
 
 Problem solved but...
 
